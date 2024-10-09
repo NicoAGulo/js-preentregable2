@@ -12,15 +12,41 @@
         <h1>COMANDA LDC</h1>
     </header>
     <main>
-        <h2>Aca se elige el pedido</h2>
-        <section>
+        <h2>RECEPCION</h2>
+        <section id="sector-recepcion">
             <h3>Pedido</h3>
+
+            <div>
+                <label for="producto">Ingresa el nombre del producto</label>
+                <input id="producto" title="producto" type="text" placeholder="producto">
+
+                <!-- Mas adelante implementare una tabla de valores para que cuando se ingrese un producto, coincida con algun producto de la tabla y que devuelva un precio automaticamente. -->
+
+                <label for="valor">Ingresa el valor del producto</label>
+                <input id="valor" title="valor" type="number" placeholder="valor">
+
+                <button id="btn-producto">Agregar al carrito</button>
+
+                <button id="btn-enviar">Enviar pedido</button>
+
+
+            </div>
+
+            <div>
+                <h4>TOTAL</h4>
+                <p id="total-carrito"></p>
+                <h4>DETALLE</h4>
+                <ul id="carrito"></ul>
+            </div>
+
+
+
         </section>
 
-        <h2>Aca se despliegan todos los pedidos</h2>
-        <section>
+        <h2>COCINA</h2>
+        <section id="sector-cocina">
             <h3>Lista de Pedidos</h3>
-            <ul></ul>
+            <ul id="lista-cocina"></ul>
         </section>
     </main>
 
