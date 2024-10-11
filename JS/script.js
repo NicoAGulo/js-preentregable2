@@ -6,6 +6,7 @@ const inputProducto = document.getElementById('producto');
 const inputValor = document.getElementById('valor');
 const carrito = document.getElementById('carrito');
 const totalCarrito = document.getElementById('total-carrito');
+const cocina = document.getElementById('lista-cocina');
 let productosEnCarrito = [];
 
 
@@ -33,6 +34,28 @@ function calcularTotal() {
     totalCarrito.textContent = `Total: $${total.toFixed(2)}`;
 }
 
+function limpiarCarritoHTML() {
+    while (carrito.firstChild) {
+        carrito.removeChild(carrito.firstChild);
+    }
+}
+
+function limpiarInputs() {
+    inputProducto.value = '';
+    inputValor.value = '';
+}
+
+function limpiarCarritoDeProductos() {
+    productosEnCarrito = [];
+}
+
+function limpiarRecepcion() {
+    limpiarCarritoHTML();
+    limpiarInputs();
+    limpiarCarritoDeProductos();
+}
+
+//Se ejecuta el siguiente codigo cuando se desea ingresar un nuevo producto al carrito
 btnAgregar.addEventListener('click', () => {
     const producto = inputProducto.value;
     const valor = inputValor.value;
@@ -47,14 +70,10 @@ btnAgregar.addEventListener('click', () => {
         productosEnCarrito.push(nuevoProducto);
 
         // Limpiar los inputs
-        inputProducto.value = '';
-        inputValor.value = '';
-
+        limpiarInputs();
         //limpia listado "carrito" para no duplicar items en la lista HTML. 
         //El array productosEnCarrito sera quien defina que objetos siguen en la lista y cuales no.
-        while (carrito.firstChild) {
-            carrito.removeChild(carrito.firstChild);
-        }
+        limpiarCarritoHTML();
 
 
 
@@ -102,13 +121,22 @@ btnAgregar.addEventListener('click', () => {
 calcularTotal()
 
 
+//2da parte -> Llevar un pedido con el boton de ENVIAR PEDIDO a una nueva lista englobado en un div para que se despache con otro boton de la pestaña COCINA
+
+
+btnEnviar.addEventListener('click', () => {
+    const nuevoPedido = document.getElementById('carrito');
+
+    let contenedorDePedidoACocinar = document.createElement('div');
+    contenedorDePedidoACocinar.innerHTML = nuevoPedido.innerHTML;
+    contenedorDePedidoACocinar.innerHTML += `<button>PEDIDO FINALIZADO</button>`;
 
 
 
+    cocina.appendChild(contenedorDePedidoACocinar);
 
 
-
-
-// btnEnviar.addEventListener('click',() =>{})
+    limpiarRecepcion();
+});
 
 
