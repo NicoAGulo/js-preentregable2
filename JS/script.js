@@ -1,15 +1,16 @@
 //import { Tempo } from 'tempo';
 
-const btnAgregar = document.getElementById('btn-producto');
+const btnAgregar = document.getElementById('btn-agregar-producto');
 const btnEnviar = document.getElementById('btn-enviar');
 const inputProducto = document.getElementById('producto');
 const inputValor = document.getElementById('valor');
 const carrito = document.getElementById('carrito');
 const totalCarrito = document.getElementById('total-carrito');
 const cocina = document.getElementById('lista-cocina');
+
 let productosEnCarrito = [];
 
-
+//Objeto que sera consultado para saber su nombre, su valor y su disponibilidad
 class Producto {
     constructor(nombre, valor) {
         this.nombre = nombre
@@ -26,6 +27,7 @@ class Producto {
     }
 }
 
+//suma de los valores de productos ingresados a "productosEnCarrito"
 function calcularTotal() {
     let total = 0;
     productosEnCarrito.forEach(producto => {
@@ -34,11 +36,14 @@ function calcularTotal() {
     totalCarrito.textContent = `Total: $${total.toFixed(2)}`;
 }
 
+
+//Borra contenido HTML del elemento de id "carrito"
 function limpiarCarritoHTML() {
     while (carrito.firstChild) {
         carrito.removeChild(carrito.firstChild);
     }
 }
+
 
 function limpiarInputs() {
     inputProducto.value = '';
@@ -53,6 +58,7 @@ function limpiarRecepcion() {
     limpiarCarritoHTML();
     limpiarInputs();
     limpiarCarritoDeProductos();
+    calcularTotal();
 }
 
 //Se ejecuta el siguiente codigo cuando se desea ingresar un nuevo producto al carrito
@@ -62,15 +68,16 @@ btnAgregar.addEventListener('click', () => {
 
     //Crear un producto solo si los datos son suficientes para su creacion
     if (producto !== '' && valor !== '') {
-        // Crear un objeto para representar el producto y su valor
+        // Crea un nuevo objeto para representar el producto y el valor ingresado
         const nuevoProducto = new Producto(producto, valor)
 
 
-        // Agregar el nuevo producto al arreglo
+        // El producto nuevo es ingresado al array llamado "productosEnCarrito"
         productosEnCarrito.push(nuevoProducto);
 
         // Limpiar los inputs
         limpiarInputs();
+
         //limpia listado "carrito" para no duplicar items en la lista HTML. 
         //El array productosEnCarrito sera quien defina que objetos siguen en la lista y cuales no.
         limpiarCarritoHTML();
@@ -78,13 +85,13 @@ btnAgregar.addEventListener('click', () => {
 
 
 
-        // Crear elementos de lista y agregarlos al carrito
+        // Crear elementos de lista y agregarlo al listado de tipo CARRITO
         productosEnCarrito.forEach((nuevoProducto, index) => {
 
             const item = document.createElement('li');
-            item.innerHTML = `Nombre: ${nuevoProducto.nombre}, Precio $${nuevoProducto.valor} <button class=btn-remove data-index="${index}">Eliminar</button>`
-            carrito.appendChild(item)
-            calcularTotal()
+            item.innerHTML = `Nombre: ${nuevoProducto.nombre}, Precio $${nuevoProducto.valor} <button class=btn-remove="${index}">Eliminar</button>`;
+            carrito.appendChild(item);
+            calcularTotal();
 
             //Se determina cuales son los botones que sirven para eliminar alguno de los productos de la lista
             botonesEliminar = document.querySelectorAll('.btn-remove');
@@ -117,8 +124,8 @@ btnAgregar.addEventListener('click', () => {
             });
         });
     }
+    calcularTotal()
 });
-calcularTotal()
 
 
 //2da parte -> Llevar un pedido con el boton de ENVIAR PEDIDO a una nueva lista englobado en un div para que se despache con otro boton de la pestaña COCINA
