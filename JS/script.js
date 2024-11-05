@@ -17,7 +17,6 @@ const totalCarrito = document.getElementById('total-carrito');
 const cocina = document.getElementById('lista-cocina');
 var codigoDePedido = 0;
 
-
 //Inicializacion de arrays Globales
 let productosEnCarrito = [];
 let pedido = [];
@@ -60,6 +59,55 @@ class Pedido {
     }
 }
 
+//Atajos segun combinacion de teclas
+document.addEventListener("keydown", (event) => {
+    if (event.altKey && event.key >= '1' && event.key <= '9') {
+        event.preventDefault();
+
+        const indice = parseInt(event.key) - 1; // Convertimos la tecla a un número y restamos 1 para obtener el índice
+
+        const botonEliminar = document.querySelector(`[data-id="eliminar-${indice}"]`);
+
+        if (botonEliminar) {
+            botonEliminar.click();
+            // actualizarIndex();
+            actualizarIndexDeCarrito();
+            calcularTotal();
+        } else {
+            console.log('No se encontró un botón para el índice especificado.');
+        }
+    }
+
+
+
+
+    //CTRL ALT + → FOCUS EN INPUT NOMBRE PRODUCTO
+    if (event.key === "+" && event.ctrlKey && event.altKey) {
+        event.preventDefault();
+        inputProducto.focus();
+    }
+
+    //CTRL ALT 1 → INGRESAR PRODUCTO A CARRITO
+    if (event.key === "1" && event.ctrlKey && event.altKey) {
+        event.preventDefault();
+        btnAgregar.click();
+    }
+
+    //CTRL ALT 0 → ENVIAR PEDIDO A COCINA
+    if (event.key === "0" && event.ctrlKey && event.altKey) {
+        event.preventDefault();
+        btnEnviar.click();
+    }
+
+    //CTRL ALT 0 → ENVIAR PEDIDO A COCINA
+    if (event.key === "0" && event.ctrlKey && event.altKey) {
+        event.preventDefault();
+        btnEnviar.click();
+    }
+});
+
+
+
 //Suma de los valores de productos ingresados a "productosEnCarrito".
 function calcularTotal() {
     console.log('Se ejecuto un calcularTotal()')
@@ -71,19 +119,6 @@ function calcularTotal() {
     console.log(`El total es ${totalCarrito.textContent}`);
 }
 
-//Borra contenido HTML para no superponer valores antigüos con los nuevos.
-function limpiarCarritoHTML() {
-    while (carrito.firstChild) {
-        carrito.removeChild(carrito.firstChild);
-    }
-}
-
-//Imprime en consola todos los items del array. (Funcion para inspecionar).
-function recorrerContenidoDeArray(arrayARecorrer) {
-    arrayARecorrer.forEach((item) => {
-        console.log(`Item: ${item}`);
-    });
-}
 
 //Limpiar Inputs de pedido
 function limpiarInputsPedido() {
@@ -127,6 +162,20 @@ function limpiarRecepcion() {
     calcularTotal();
 }
 
+//Borra contenido HTML para no superponer valores antigüos con los nuevos.
+function limpiarCarritoHTML() {
+    while (carrito.firstChild) {
+        carrito.removeChild(carrito.firstChild);
+    }
+}
+
+//Imprime en consola todos los items del array. (Funcion para inspecionar).
+function actualizarIndexDeCarrito() {
+    productosEnCarrito.forEach((item, indice) => {
+        item.codigo = indice;
+    });
+}
+
 //Organiza el index para que no se borren elementos indebidos
 function actualizarIndex() {
     const lista = document.getElementById('carrito')
@@ -137,6 +186,10 @@ function actualizarIndex() {
         elementosLi.forEach((li, indice) => {
             const boton = li.getElementsByTagName('button')[0];
             boton.dataset.index = indice;
+            boton.dataset.id = `eliminar-${indice}`;
+
+            li.innerHTML.textContent = `Indice ${indice} --- producto ${li.nombre} --- Valor $${li.valor}`;
+
         });
     }
 }
@@ -149,12 +202,17 @@ function agregaItemAlPedido(elemento, indice) {
     const botonEliminarItem = document.createElement('button');
     botonEliminarItem.textContent = 'Eliminar';
     botonEliminarItem.dataset.index = indice;
+    botonEliminarItem.dataset.id = `eliminar-${indice}`;
 
     botonEliminarItem.addEventListener('click', () => {
         const indice = botonEliminarItem.dataset.index;
         productosEnCarrito.splice(indice, 1);
         carrito.removeChild(item);
-        actualizarIndex();
+
+        limpiarInputsProducto();
+        limpiarCarritoHTML();
+        actualizarPedido();
+        actualizarIndexDeCarrito();
         calcularTotal();
     });
 
@@ -190,8 +248,11 @@ function agregarPedidoACocina(pedido) {
 
 //Actualiza el listado de items en el pedido (ejecuta agregaItemAlPedido)
 function actualizarPedido() {
-    productosEnCarrito.forEach((producto) => {
-        agregaItemAlPedido(producto);
+    productosEnCarrito.forEach((producto, indice) => {
+        agregaItemAlPedido(producto, indice);
+        actualizarIndexDeCarrito();
+        // actualizarIndex();
+
     });
 
 }
@@ -216,6 +277,7 @@ btnAgregar.addEventListener('click', () => {
         limpiarInputsProducto();
         limpiarCarritoHTML();
         actualizarPedido();
+        actualizarIndexDeCarrito();
         calcularTotal();
 
     }
