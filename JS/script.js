@@ -61,7 +61,7 @@ class Pedido {
 
 //Atajos segun combinacion de teclas
 document.addEventListener("keydown", (event) => {
-    if (event.altKey && event.key >= '1' && event.key <= '9') {
+    if (event.altKey && event.ctrlKey && event.key >= '1' && event.key <= '9') {
         event.preventDefault();
 
         const indice = parseInt(event.key) - 1; // Convertimos la tecla a un número y restamos 1 para obtener el índice
@@ -81,26 +81,20 @@ document.addEventListener("keydown", (event) => {
 
 
 
-    //CTRL ALT + → FOCUS EN INPUT NOMBRE PRODUCTO
-    if (event.key === "+" && event.ctrlKey && event.altKey) {
+    //CTRL ALT * → FOCUS EN INPUT NOMBRE PRODUCTO
+    if (event.key === "*" && event.ctrlKey) {
         event.preventDefault();
         inputProducto.focus();
     }
 
-    //CTRL ALT 1 → INGRESAR PRODUCTO A CARRITO
-    if (event.key === "1" && event.ctrlKey && event.altKey) {
+    //CTRL ALT + → INGRESAR PRODUCTO A CARRITO
+    if (event.key === "+" && event.ctrlKey && inputProducto !== '' && inputValor !== '') {
         event.preventDefault();
         btnAgregar.click();
     }
 
     //CTRL ALT 0 → ENVIAR PEDIDO A COCINA
-    if (event.key === "0" && event.ctrlKey && event.altKey) {
-        event.preventDefault();
-        btnEnviar.click();
-    }
-
-    //CTRL ALT 0 → ENVIAR PEDIDO A COCINA
-    if (event.key === "0" && event.ctrlKey && event.altKey) {
+    if (event.key === "0" && event.ctrlKey && inputNombre !== '' && inputTime.innerText !== '') {
         event.preventDefault();
         btnEnviar.click();
     }
@@ -197,7 +191,7 @@ function actualizarIndex() {
 //Agrega un item al pedido
 function agregaItemAlPedido(elemento, indice) {
     const item = document.createElement('li');
-    item.textContent = `Indice ${indice} --- producto ${elemento.nombre} --- Valor $${elemento.valor}`;
+    item.textContent = `N°${indice + 1} --- producto ${elemento.nombre} --- Valor $${elemento.valor}`;
 
     const botonEliminarItem = document.createElement('button');
     botonEliminarItem.textContent = 'Eliminar';
@@ -262,7 +256,7 @@ function actualizarPedido() {
 btnAgregar.addEventListener('click', () => {
 
     //Crear un producto solo si los datos son suficientes para su creacion
-    if (producto !== '' && valor !== '') {
+    if (producto.value !== '' && valor.value !== '') {
 
         console.log('Se agregara un nuevo producto al pedido');
         const producto = inputProducto.value;
