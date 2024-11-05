@@ -61,42 +61,63 @@ class Pedido {
 
 //Atajos segun combinacion de teclas
 document.addEventListener("keydown", (event) => {
-    if (event.altKey && event.ctrlKey && event.key >= '1' && event.key <= '9') {
+
+    if (event.altKey && event.ctrlKey) {
         event.preventDefault();
 
-        const indice = parseInt(event.key) - 1; // Convertimos la tecla a un número y restamos 1 para obtener el índice
 
-        const botonEliminar = document.querySelector(`[data-id="eliminar-${indice}"]`);
+        //CTRL ALT N° → Elimina el N° de producto en el pedido (del 1 al 9)
+        if (event.altKey && event.ctrlKey && event.key >= '1' && event.key <= '9') {
+            const indice = parseInt(event.key) - 1; // Se convierte el numero ingresado restandole 1 para obtener el índice del array
 
-        if (botonEliminar) {
-            botonEliminar.click();
-            // actualizarIndex();
-            actualizarIndexDeCarrito();
-            calcularTotal();
-        } else {
-            console.log('No se encontró un botón para el índice especificado.');
+            const botonEliminar = document.querySelector(`[data-id="eliminar-${indice}"]`);
+
+            if (botonEliminar) {
+                botonEliminar.click();
+                actualizarIndexDeCarrito();
+                calcularTotal();
+            } else {
+                console.log('No se encontró un botón para el índice especificado.');
+            }
         }
-    }
+
+        //CTRL ALT * → FOCUS EN INPUT NOMBRE PRODUCTO
+        if (event.key === "/" && event.altKey && event.ctrlKey) {
+            inputProducto.focus();
+        }
+
+        //Si no esta completo el producto para enviar al carrito enviara un alerta avisando que no estan los datos completos
+        if (event.key === "+" && event.altKey && event.ctrlKey && inputProducto.value == '' && inputValor.value == '') {
+            console.log("No hay nombre de producto y/o precio del mismo para que se envie el producto al carrito")
+            alert("No hay nombre de producto y/o precio del mismo para que se envie el producto al carrito")
+        }
+
+        //CTRL ALT + → INGRESAR PRODUCTO A CARRITO
+        if (event.key === "+" && event.altKey && event.ctrlKey && inputProducto.value !== '' && inputValor.value !== '') {
+            btnAgregar.click();
+        }
+
+        //Si no esta completo el pedido para enviar a cocina enviara un alerta avisando que no estan los datos completos
+        if (event.key === "0" && event.altKey && event.ctrlKey && inputNombre.value == '' && inputTime.value == '') {
+            console.log("No hay nombre de cliente y/u horario para que se envie el pedido a cocina")
+            alert("No hay nombre de cliente y/u horario para que se envie el pedido a cocina")
+        }
+
+        //CTRL ALT 0 → ENVIAR PEDIDO A COCINA
+        if (event.key === "0" && event.altKey && event.ctrlKey && inputNombre.value !== '' && inputTime.value !== '') {
+            btnEnviar.click();
+        }
+
+        //CTRL ALT N → FOCUS EN INPUT NOMBRE CLIENTE
+        if (event.key === "*" && event.altKey && event.ctrlKey) {
+            inputNombre.focus();
+        }
+        //CTRL ALT H → FOCUS EN INPUT HORARIO
+        if (event.key === "-" && event.altKey && event.ctrlKey) {
+            inputTime.focus();
+        }
 
 
-
-
-    //CTRL ALT * → FOCUS EN INPUT NOMBRE PRODUCTO
-    if (event.key === "*" && event.ctrlKey) {
-        event.preventDefault();
-        inputProducto.focus();
-    }
-
-    //CTRL ALT + → INGRESAR PRODUCTO A CARRITO
-    if (event.key === "+" && event.ctrlKey && inputProducto !== '' && inputValor !== '') {
-        event.preventDefault();
-        btnAgregar.click();
-    }
-
-    //CTRL ALT 0 → ENVIAR PEDIDO A COCINA
-    if (event.key === "0" && event.ctrlKey && inputNombre !== '' && inputTime.innerText !== '') {
-        event.preventDefault();
-        btnEnviar.click();
     }
 });
 
