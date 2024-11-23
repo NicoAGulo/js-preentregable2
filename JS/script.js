@@ -59,6 +59,13 @@ class Pedido {
     }
 }
 
+fetch('guia.txt')
+.then(response=>response.text())
+.then(data=>{
+    console.log(data);
+    alert(`${data}`)
+});
+
 //Atajos segun combinacion de teclas
 document.addEventListener("keydown", (event) => {
 
