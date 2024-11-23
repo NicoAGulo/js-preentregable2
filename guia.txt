@@ -1,0 +1,10 @@
+Bienvenidos a COMANDA de Nicolas Alberto Gulo.
+Mediante esta peticion fetch usted podra conocer como poder operar para agregar productos a un pedido y como enviar pedido a cocina:
+
+
+1° Por cada nombre de producto que se ingrese junto con su valor usted debera clickear en agregar carrito
+2° Por cada carrito finalizado usted debera ingresa el nombre del cliente, el horario de retiro y clickear en enviar pedido para que la cocina lo pueda recibir
+
+Mas adelante usted podra contar con la posibilidad de despachar el pedido de cocina mediante un boton de despacho.
+
+Gracias por utilizar COMANDA.
